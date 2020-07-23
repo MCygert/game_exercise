@@ -1,7 +1,8 @@
 const config = {
     width: 5,
     height: 5,
-    loopingDelay: 100
+    loopingDelay: 100,
+    colorValues: ['red', 'orange', 'green']
 }
 
 class Tick {
@@ -66,11 +67,13 @@ class Game {
 
 class Cell {
     parentNode = null;
+    color = config.colorValues[Math.floor(Math.random() * config.colorValues.length)];
 
     constructor (parentNode) {
         this.parentNode = parentNode;
         this.dom = document.createElement("span");
         this.dom.className = 'cell';
+        this.dom.style.background = this.color;
         this.parentNode.appendChild(this.dom);
 
         this.dom.addEventListener("click", this.click.bind(this));
@@ -78,6 +81,7 @@ class Cell {
 
     click() {
         console.log(Game.time.deltaTime);
+        console.log(this.color);
     }
 
     update() {
