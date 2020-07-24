@@ -2,7 +2,9 @@ const config = {
     width: 5,
     height: 5,
     loopingDelay: 100,
-    colorValues: ['red', 'orange', 'green']
+    colorValues: ['red', 'orange', 'green'],
+    gameTime: 20,
+    lives: 3
 }
 
 class Tick {
@@ -24,7 +26,7 @@ class Game {
     game = null;
     cells = [];
     currentTime = 0;
-    points = 0;
+    static points = 0;
 
     static time = null;
 
@@ -34,18 +36,18 @@ class Game {
 
     initGame() {
         if (document.body) {
-            this.instatiate();
+            this.instantiate();
         } else {
             document.addEventListener("DOMContentLoaded", () => {
                 console.log("Test");
-                this.instatiate();
+                this.instantiate();
             })
         }
 
         setInterval(this.update.bind(this), config.loopingDelay);
     }
 
-    instatiate() {
+    instantiate() {
         this.game = document.getElementById("game");
 
         for (let i = 0; i < config.height; i++) {
@@ -68,7 +70,6 @@ class Game {
 
 class Cell {
     parentNode = null;
-    color = this.getColor();
     minTime = 3;
     maxTime = 5;
     actualTime = 0;
@@ -77,27 +78,33 @@ class Cell {
         this.parentNode = parentNode;
         this.dom = document.createElement("span");
         this.dom.className = 'cell'
-        this.dom.id = this.color;
+        this.dom.id = this.getColor();
         this.parentNode.appendChild(this.dom);
 
         this.dom.addEventListener("click", this.click.bind(this));
     }
 
     click() {
-        console.log(Game.time.deltaTime);
-        console.log(this.color);
-        console.log(this.actualTime);
+        if (this.dom.id === 'green') {
+            Game.points++;
+            this.dom.id = this.getColor();
+        } else if(this.dom.id === 'red'){
+            config.lives--;
+            this.dom.id = this.getColor();
+        }
+        console.log(Game.points);
     }
-    getColor () {
+
+    getColor() {
         return config.colorValues[Math.floor(Math.random() * config.colorValues.length)];
     }
 
     update() {
-    this.actualTime += Game.time.deltaTime;
-    if (this.actualTime > this.maxTime) {
-        this.dom.id = this.getColor();
-        this.actualTime = 0;
-    }
+        this.actualTime += Game.time.deltaTime;
+        if (this.actualTime > this.maxTime) {
+            this.dom.id = this.getColor();
+            this.actualTime = 0;
+        }
     }
 }
 
