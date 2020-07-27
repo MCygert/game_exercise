@@ -47,6 +47,16 @@ class Game {
         setInterval(this.update.bind(this), config.loopingDelay);
     }
 
+    clearGame() {
+        let buttonToRestart = document.createElement("button");
+        buttonToRestart.addEventListener("click", this.initGame)
+        let finalPoints = document.createElement("textarea")
+        finalPoints.value = Game.points.toString();
+        this.game = document.getElementById("game");
+        this.game.appendChild(buttonToRestart);
+        this.game.appendChild(finalPoints);
+    }
+
     instantiate() {
         this.game = document.getElementById("game");
 
@@ -63,6 +73,10 @@ class Game {
 
     update() {
         this.currentTime += Game.time.deltaTime;
+        if (config.lives <= 0) {
+            console.log(config.lives)
+        this.clearGame();
+        }
 
         this.cells.forEach(c => c.update());
     }
@@ -88,7 +102,7 @@ class Cell {
         if (this.dom.id === 'green') {
             Game.points++;
             this.dom.id = this.getColor();
-        } else if(this.dom.id === 'red'){
+        } else if (this.dom.id === 'red') {
             config.lives--;
             this.dom.id = this.getColor();
         }
