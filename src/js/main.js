@@ -24,6 +24,7 @@ class Tick {
 }
 
 class Game {
+    restart = null;
     game = null;
     cells = [];
     currentTime = 0;
@@ -49,18 +50,24 @@ class Game {
     }
 
     clearGame() {
+        this.game.innerHTML = "";
+        this.restart = document.getElementById("restart")
         let buttonToRestart = document.createElement("button");
-        buttonToRestart.addEventListener("click", this.initGame)
-        let finalPoints = document.createElement("textarea")
-        finalPoints.value = Game.points.toString();
-        this.game = document.getElementById("game");
-        this.game.appendChild(buttonToRestart);
-        this.game.appendChild(finalPoints);
+        buttonToRestart.addEventListener("click", this.instantiate)
+        buttonToRestart.innerHTML = "restart";
+        let finalPoints = document.createElement("h3")
+        finalPoints.innerHTML = "Your final points = " + Game.points.toString();
+        this.restart.appendChild(buttonToRestart);
+        this.restart.appendChild(finalPoints);
+        // temporary hack
+        config.lives = 1;
     }
 
     instantiate() {
         config.lives = config.maxNumberOfLives;
         this.game = document.getElementById("game");
+        this.restart = document.getElementById("restart")
+        this.restart.innerHTML = "";
 
         for (let i = 0; i < config.height; i++) {
             const row = document.createElement("div");
@@ -76,6 +83,12 @@ class Game {
     update() {
         this.currentTime += Game.time.deltaTime;
         this.cells.forEach(c => c.update());
+        this.stopGameWhenLostLost();
+    }
+    stopGameWhenLostLost() {
+        if (config.lives <= 0) {
+            this.clearGame();
+        }
     }
 }
 
