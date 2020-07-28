@@ -4,6 +4,7 @@ const config = {
     loopingDelay: 100,
     colorValues: ['red', 'orange', 'green'],
     gameTime: 20,
+    maxNumberOfLives: 3,
     lives: 3
 }
 
@@ -58,6 +59,7 @@ class Game {
     }
 
     instantiate() {
+        config.lives = config.maxNumberOfLives;
         this.game = document.getElementById("game");
 
         for (let i = 0; i < config.height; i++) {
@@ -73,11 +75,6 @@ class Game {
 
     update() {
         this.currentTime += Game.time.deltaTime;
-        if (config.lives <= 0) {
-            console.log(config.lives)
-        this.clearGame();
-        }
-
         this.cells.forEach(c => c.update());
     }
 }
