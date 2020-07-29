@@ -26,7 +26,7 @@ class Tick {
 class Game {
     restart = null;
     game = null;
-    cells = [];
+    cells = null;
     currentTime = 0;
     static points = 0;
 
@@ -53,7 +53,9 @@ class Game {
         this.game.innerHTML = "";
         this.restart = document.getElementById("restart")
         let buttonToRestart = document.createElement("button");
-        buttonToRestart.addEventListener("click", this.instantiate)
+        buttonToRestart.addEventListener("click", () => {
+            return new Game();
+        })
         buttonToRestart.innerHTML = "restart";
         let finalPoints = document.createElement("h3")
         finalPoints.innerHTML = "Your final points = " + Game.points.toString();
@@ -64,6 +66,7 @@ class Game {
     }
 
     instantiate() {
+        this.cells = [];
         config.lives = config.maxNumberOfLives;
         this.game = document.getElementById("game");
         this.restart = document.getElementById("restart")
