@@ -1,9 +1,10 @@
 # game_exercise
 ## TODO:
-- [ ] Repair restarting.
+- [x] Repair restarting.
+- [x] Add counters for lives and points.
 - [ ] Create gradually increasing level of difficulty.
 
 Optional:
 - [ ] Create more encouraging flow of gameplay.
-- [ ] Use minimum time
+- [x] Use minimum time
 - [ ] Make it look better
